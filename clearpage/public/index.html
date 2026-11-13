@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#173b35" />
+    <title>Clearpage — Image to text</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon-192.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 3.5h9l3 3V20H6z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M9 10h6M9 13h6M9 16h4"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span>clearpage<span class="brand-dot">.</span></span>
+        </div>
+        <div class="nav-label">WORKSPACE</div>
+        <button class="nav-item active" id="workspaceNav">
+          <span class="nav-ico">▧</span> My workspace
+          <span class="nav-arrow">↗</span></button
+        ><button class="nav-item" id="assistantNav">
+          <span class="nav-ico">✧</span> Writing assistant
+        </button>
+        <div class="side-bottom">
+          <div class="side-tip">
+            <div class="tip-icon">✦</div>
+            <strong>Better in, better out.</strong>
+            <p>Use clear, well-lit images for the most accurate results.</p>
+          </div>
+          <button class="nav-item settings-link" id="settingsBtn">
+            <span class="nav-ico">⚙</span> Settings
+            <span id="keyDot" class="key-dot"></span>
+          </button>
+          <div class="side-foot">Made for the details <span>✳</span></div>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="crumb">
+            <span>Workspace</span><span class="crumb-sep">/</span
+            ><strong>Image to text</strong>
+          </div>
+          <div class="top-actions">
+            <span class="privacy-pill"><span>◈</span> Your workspace</span
+            ><button class="button small install" id="installBtn" hidden>
+              ↓ &nbsp; Install app</button
+            ><button
+              class="icon-button mobile-settings"
+              id="mobileSettings"
+              title="Settings"
+            >
+              ⚙
+            </button>
+          </div>
+        </header>
+        <div class="content">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">
+                <span class="eyebrow-dot"></span> YOUR DOCUMENT WORKSPACE
+              </div>
+              <h1>
+                Every word, in its place<span class="heading-dot">.</span>
+              </h1>
+              <p>
+                Turn your images into clear, editable text. One page at a time.
+              </p>
+            </div>
+            <button class="button outline heading-settings" id="settingsTop">
+              <span>⚙</span> API settings
+            </button>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <span class="step-num">01</span>
+              <div>
+                <strong>Add your images</strong
+                ><small>Up to 50 at a time</small>
+              </div>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+              <span class="step-num">02</span>
+              <div>
+                <strong>Extract the text</strong
+                ><small>Powered by Qwen vision</small>
+              </div>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+              <span class="step-num">03</span>
+              <div>
+                <strong>Review & export</strong><small>Make it yours</small>
+              </div>
+            </div>
+          </div>
+          <section class="work-card">
+            <div class="card-head">
+              <div>
+                <div class="section-kicker">YOUR DOCUMENTS</div>
+                <h2>
+                  Image workspace
+                  <span id="countBadge" class="count-badge">0 / 50</span>
+                </h2>
+                <p>
+                  Upload images, arrange their order, and extract their text.
+                </p>
+              </div>
+              <div class="card-actions">
+                <button class="button outline" id="addMore">
+                  <span class="plus">＋</span> Add images</button
+                ><button class="button dark" id="extractAll">
+                  <span>✧</span> Extract text
+                </button>
+              </div>
+            </div>
+            <div id="emptyState" class="empty-zone">
+              <div class="drop-area" id="dropArea">
+                <div class="upload-art">
+                  <div class="art-paper back"></div>
+                  <div class="art-paper front">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="art-plus">＋</div>
+                </div>
+                <h3>Let’s bring your pages in</h3>
+                <p>
+                  Drag and drop images here, or choose files to get started.
+                </p>
+                <button class="button dark" id="browseBtn">
+                  ＋ &nbsp; Choose images
+                </button>
+                <div class="file-note">
+                  JPG, PNG or WEBP <span>•</span> UP TO 50 IMAGES
+                  <span>•</span> 15 MB EACH
+                </div>
+              </div>
+            </div>
+            <div id="workspace" hidden>
+              <div class="workspace-toolbar">
+                <div class="toolbar-title">
+                  <strong>Pages</strong><span id="pageCount">0 images</span>
+                </div>
+                <div class="toolbar-right">
+                  <label class="verify"
+                    ><input type="checkbox" id="verifyToggle" checked /><span
+                      >Double-check with vision</span
+                    ><span
+                      title="Runs a second image check. This costs extra and can still make mistakes."
+                      >ⓘ</span
+                    ></label
+                  ><button class="text-btn" id="clearAll">Clear all</button>
+                </div>
+              </div>
+              <div class="workspace-grid">
+                <div class="page-column">
+                  <div id="pageList" class="page-list"></div>
+                  <button class="add-page" id="addPage">
+                    ＋ &nbsp; Add more images
+                  </button>
+                  <div class="order-hint">
+                    ↕ &nbsp; Use arrows to arrange page order
+                  </div>
+                </div>
+                <div class="review-column">
+                  <div class="review-top">
+                    <div>
+                      <div class="section-kicker">PAGE REVIEW</div>
+                      <h3 id="selectedTitle">Select a page</h3>
+                    </div>
+                    <span class="status" id="selectedStatus">Ready</span>
+                  </div>
+                  <div class="review-grid">
+                    <div class="image-panel">
+                      <div class="panel-label">
+                        ORIGINAL IMAGE <span>↗</span>
+                      </div>
+                      <div class="image-frame">
+                        <img id="previewImage" alt="Selected original page" />
+                      </div>
+                    </div>
+                    <div class="text-panel">
+                      <div class="panel-label">
+                        EXTRACTED TEXT <span id="wordCount">0 words</span>
+                      </div>
+                      <textarea
+                        id="outputText"
+                        placeholder="Your extracted text will appear here. You can edit it before exporting."
+                      ></textarea>
+                      <div class="editor-footer">
+                        <span>✎ &nbsp; Editable text</span
+                        ><button class="text-btn" id="copyPage">
+                          Copy page
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="review-bottom">
+                    <span id="pageMessage"
+                      >Review each page against the original for accuracy.</span
+                    ><button class="button outline small" id="extractPage">
+                      ✧ &nbsp; Extract this page
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="export-bar">
+                <div>
+                  <strong id="progressTitle">Ready when you are</strong>
+                  <p id="progressText">
+                    Your pages will be processed in order.
+                  </p>
+                </div>
+                <div class="export-actions">
+                  <button class="button outline" id="copyAll">Copy all</button
+                  ><button class="button dark" id="downloadAll">
+                    ↓ &nbsp; Download .txt
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="below">
+            <div class="note">
+              <span class="note-icon">✧</span>
+              <div>
+                <strong>A little care goes a long way.</strong>
+                <p>
+                  AI can make mistakes. Always review names, numbers, and
+                  unclear text against your original images.
+                </p>
+              </div>
+            </div>
+            <div class="powered">
+              POWERED BY <strong>Qwen</strong> <span>×</span>
+              <strong>Groq</strong>
+            </div>
+          </div>
+          <footer>
+            <span>© Clearpage · Made for thoughtful work</span
+            ><span
+              >Your images stay in this session until sent for extraction.</span
+            >
+          </footer>
+        </div>
+      </main>
+    </div>
+    <input
+      type="file"
+      id="fileInput"
+      accept="image/jpeg,image/png,image/webp"
+      multiple
+      hidden
+    />
+    <dialog id="settingsDialog">
+      <div class="modal-head">
+        <div>
+          <div class="section-kicker">PERSONALIZE YOUR WORKSPACE</div>
+          <h2>API settings</h2>
+        </div>
+        <button class="close" data-close="settingsDialog" aria-label="Close">
+          ×
+        </button>
+      </div>
+      <p class="modal-intro">
+        Connect your own API keys to start working. Your keys are kept only in
+        this tab’s memory.
+      </p>
+      <label class="field"
+        >Groq API key <span class="required">REQUIRED FOR EXTRACTION</span
+        ><input
+          id="groqKey"
+          type="password"
+          autocomplete="off"
+          placeholder="gsk_..."
+        /><small
+          >Qwen vision runs through Groq. Images are sent to Groq for
+          processing.</small
+        ></label
+      ><label class="field"
+        >OpenAI API key <span class="optional">OPTIONAL</span
+        ><input
+          id="openaiKey"
+          type="password"
+          autocomplete="off"
+          placeholder="sk-..."
+        /><small
+          >Used only when you ask the writing assistant. Document text is sent
+          to OpenAI.</small
+        ></label
+      >
+      <details>
+        <summary>Advanced model settings</summary>
+        <label class="field"
+          >Groq vision model<input
+            id="groqModel"
+            value="qwen/qwen3.8-27b" /></label
+        ><label class="field"
+          >OpenAI model<input id="openaiModel" value="gpt-4.1-mini"
+        /></label>
+      </details>
+      <div class="privacy-note">
+        ◈ &nbsp; Keys, images and results are not saved after you close or
+        reload this tab. Download your work first. Provider fees and privacy
+        policies apply.
+      </div>
+      <button class="button dark full" data-close="settingsDialog">Done</button>
+    </dialog>
+    <dialog id="assistantDialog">
+      <div class="modal-head">
+        <div>
+          <div class="section-kicker">YOUR WRITING PARTNER</div>
+          <h2>Writing assistant <span>✧</span></h2>
+        </div>
+        <button class="close" data-close="assistantDialog" aria-label="Close">
+          ×
+        </button>
+      </div>
+      <p class="modal-intro">
+        Ask a question or transform your extracted text using OpenAI. Your
+        source text stays unchanged.
+      </p>
+      <label class="field"
+        >Use text from<select id="assistantScope">
+          <option value="all">All extracted pages, in order</option>
+          <option value="page">Selected page only</option>
+        </select></label
+      ><label class="field"
+        >What would you like to do?<textarea
+          id="question"
+          placeholder="For example: Summarize the key points, or rewrite this as a professional email."
+        ></textarea></label
+      ><button class="button dark full" id="askAssistant">
+        ✧ &nbsp; Ask assistant
+      </button>
+      <div id="assistantResult" class="assistant-result" hidden>
+        <div class="panel-label">
+          RESPONSE <button id="copyAnswer" class="text-btn">Copy</button>
+        </div>
+        <div id="answer"></div>
+      </div>
+      <p class="assistant-warning">
+        Only text included in your selection is sent to OpenAI. Responses can
+        contain mistakes; review before using.
+      </p>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
